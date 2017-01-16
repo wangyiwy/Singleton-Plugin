@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.codeStyle.CodeStyleManager;
+import com.intellij.psi.javadoc.PsiDocComment;
 import com.intellij.psi.util.PsiTreeUtil;
 
 /**
@@ -36,16 +37,24 @@ public class EnumPatternBuilder extends BaseBuilder {
                 PsiClass psiClass = PsiTreeUtil.getParentOfType(element, PsiClass.class);
                 if (psiClass == null) return;
 
-                System.out.println(psiClass.getNameIdentifier().getNode().getText());
-
                 if (psiClass.getNameIdentifier() == null) return;
                 String className = psiClass.getNameIdentifier().getText();
-                psiClass.getNameIdentifier().accept(PsiElementVisitor.EMPTY_VISITOR);
 
                 PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(psiClass.getProject());
+                PsiEnumConstant enumConstant = elementFactory.createEnumConstantFromText("INSTANCE", psiClass);
 
+                if (!containFiled(psiClass, enumConstant)) {
+                    psiClass.add(enumConstant);
+                }
 
-                CodeStyleManager.getInstance(project).reformat(psiClass);
+                if (!psiClass.isEnum()) {
+                    CodeStyleManager.getInstance(project).reformat(psiClass);
+                    String text = " class " + className;
+                    int index = editor.getDocument().getText().indexOf(text);
+                    if (index != -1) {
+                        editor.getDocument().replaceString(index, index + text.length(), " enum " + className);
+                    }
+                }
             }
         }.execute();
     }
