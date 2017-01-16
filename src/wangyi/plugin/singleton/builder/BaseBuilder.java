@@ -23,32 +23,14 @@ public abstract class BaseBuilder {
     }
 
     protected boolean containFiled(PsiClass psiClass, PsiField psiField) {
-        PsiField[] psiFields = psiClass.getFields();
-        for (PsiField f : psiFields) {
-            if (f.getName() != null && f.getName().equals(psiField.getName())) {
-                return true;
-            }
-        }
-        return false;
+        return psiClass.findFieldByName(psiField.getName(), true) != null;
     }
 
     protected boolean containMethod(PsiClass psiClass, PsiMethod psiMethod) {
-        PsiMethod[] psiMethods = psiClass.getMethods();
-        for (PsiMethod m : psiMethods) {
-            if (m.getName().equals(psiMethod.getName())) {
-                return true;
-            }
-        }
-        return false;
+        return psiClass.findMethodsByName(psiMethod.getName(), true).length > 0;
     }
 
     protected boolean containClass(PsiClass psiClass, PsiClass innerClass) {
-        PsiClass[] psiClasses = psiClass.getInnerClasses();
-        for (PsiClass p : psiClasses) {
-            if (p.getName() != null && p.getName().equals(innerClass.getName())) {
-                return true;
-            }
-        }
-        return false;
+        return psiClass.findInnerClassByName(innerClass.getName(), true) != null;
     }
 }
