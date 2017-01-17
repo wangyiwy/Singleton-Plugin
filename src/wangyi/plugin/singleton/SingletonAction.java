@@ -30,23 +30,24 @@ public class SingletonAction extends BaseGenerateAction implements OnPatternSele
         BaseBuilder builder = null;
         switch (index) {
             case 0:
-                builder = new EnumPatternBuilder(mEvent);
+                builder = new EnumPatternBuilder();
                 break;
             case 1:
-                builder = new LazyPatternBuilder(mEvent);
+                builder = new LazyPatternBuilder();
                 break;
             case 2:
-                builder = new HungryPatternBuilder(mEvent);
+                builder = new HungryPatternBuilder();
                 break;
             case 3:
-                builder = new ThreadSafePatternBuilder(mEvent);
+                builder = new ThreadSafePatternBuilder();
                 break;
             case 4:
-                builder = new InnerClassPatternBuilder(mEvent);
+                builder = new InnerClassPatternBuilder();
                 break;
         }
+
         if (builder != null) {
-            builder.build();
+            builder.build(mEvent);
         }
     }
 }

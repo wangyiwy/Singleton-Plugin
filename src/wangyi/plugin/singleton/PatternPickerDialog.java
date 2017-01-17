@@ -1,12 +1,8 @@
 package wangyi.plugin.singleton;
 
-import wangyi.plugin.singleton.OnPatternSelectedListener;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 /**
  * author WangYi
@@ -39,7 +35,37 @@ public class PatternPickerDialog extends JDialog {
 
         mContentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         mListPattern.setSelectedIndex(0);
-        setBounds(new Rectangle(200, 200));
+        mListPattern.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        mListPattern.addKeyListener(new KeyListener() {
+            int preIndex = -1;
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                preIndex = mListPattern.getSelectedIndex();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                int selectedIndex = mListPattern.getSelectedIndex();
+                if (preIndex == selectedIndex) {
+                    if (selectedIndex == 0) {
+                        if (e.getKeyCode() == KeyEvent.VK_UP) {
+                            mListPattern.setSelectedIndex(4);
+                        }
+                    } else if (selectedIndex == 4) {
+                        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                            mListPattern.setSelectedIndex(0);
+                        }
+                    }
+                }
+            }
+        });
+        setBounds(new Rectangle(300, 200));
         setLocationRelativeTo(null);
     }
 
