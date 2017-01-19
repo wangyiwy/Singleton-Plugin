@@ -12,7 +12,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 public class ThreadSafePatternBuilder extends BaseBuilder {
     @Override
     public void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className) {
-        super.build(editor, elementFactory, project, psiClass, className);
 
         PsiType psiType = PsiType.getTypeByName(className, project
                 , GlobalSearchScope.EMPTY_SCOPE);

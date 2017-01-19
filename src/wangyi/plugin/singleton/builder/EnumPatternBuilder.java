@@ -14,7 +14,6 @@ public class EnumPatternBuilder extends BaseBuilder {
 
     @Override
     public void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className) {
-        super.build(editor, elementFactory, project, psiClass, className);
         PsiEnumConstant enumConstant = elementFactory.createEnumConstantFromText("INSTANCE", psiClass);
 
         if (!containFiled(psiClass, enumConstant)) {
@@ -31,7 +30,6 @@ public class EnumPatternBuilder extends BaseBuilder {
                 documentManager.doPostponedOperationsAndUnblockDocument(document);
                 document.replaceString(index, index + text.length(), " enum " + className);
                 documentManager.commitDocument(document);
-
             }
         }
     }

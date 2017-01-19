@@ -12,7 +12,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 public class HungryPatternBuilder extends BaseBuilder {
     @Override
     public void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className) {
-        super.build(editor, elementFactory, project, psiClass, className);
         if (psiClass.getConstructors().length == 0) {
             PsiMethod constructor = elementFactory.createConstructor();
             constructor.getModifierList().setModifierProperty(PsiModifier.PRIVATE, true);

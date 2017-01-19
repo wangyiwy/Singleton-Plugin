@@ -13,35 +13,30 @@ import com.intellij.psi.util.PsiTreeUtil;
  * author WangYi
  * created on 2017/1/14.
  */
-public class BaseBuilder {
+public abstract class BaseBuilder {
     public void build(AnActionEvent event) {
         PsiFile psiFile = event.getData(LangDataKeys.PSI_FILE);
         if (psiFile == null) return;
-        new WriteCommandAction.Simple(event.getProject(), psiFile) {
-            @Override
-            protected void run() throws Throwable {
-                Editor editor = event.getData(PlatformDataKeys.EDITOR);
-                if (editor == null) return;
-                Project project = editor.getProject();
-                if (project == null) return;
+        WriteCommandAction.runWriteCommandAction(event.getProject(), () -> {
+            Editor editor = event.getData(PlatformDataKeys.EDITOR);
+            if (editor == null) return;
+            Project project = editor.getProject();
+            if (project == null) return;
 
-                PsiElement element = psiFile.findElementAt(editor.getCaretModel().getOffset());
-                PsiClass psiClass = PsiTreeUtil.getParentOfType(element, PsiClass.class);
-                if (psiClass == null) return;
+            PsiElement element = psiFile.findElementAt(editor.getCaretModel().getOffset());
+            PsiClass psiClass = PsiTreeUtil.getParentOfType(element, PsiClass.class);
+            if (psiClass == null) return;
 
-                if (psiClass.getNameIdentifier() == null) return;
-                String className = psiClass.getNameIdentifier().getText();
+            if (psiClass.getNameIdentifier() == null) return;
+            String className = psiClass.getNameIdentifier().getText();
 
-                PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
+            PsiElementFactory elementFactory = JavaPsiFacade.getElementFactory(project);
 
-                build(editor, elementFactory, project, psiClass, className);
-            }
-        }.execute();
+            build(editor, elementFactory, project, psiClass, className);
+        });
     }
 
-    public void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className) {
-
-    }
+    public abstract void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className);
 
     protected boolean containFiled(PsiClass psiClass, PsiField psiField) {
         return psiClass.findFieldByName(psiField.getName(), true) != null;

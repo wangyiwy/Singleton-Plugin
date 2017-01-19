@@ -12,7 +12,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 public class InnerClassPatternBuilder extends BaseBuilder {
     @Override
     public void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className) {
-        super.build(editor, elementFactory, project, psiClass, className);
         PsiClass innerClass = createStaticInnerClass(className, project, elementFactory);
         if (!containClass(psiClass, innerClass)) {
             psiClass.add(innerClass);

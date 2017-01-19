@@ -12,7 +12,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 public class LazyPatternBuilder extends BaseBuilder {
     @Override
     public void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className) {
-        super.build(editor, elementFactory, project, psiClass, className);
         //成员变量类型
         PsiType psiType = PsiType.getTypeByName(className, project
                 , GlobalSearchScope.EMPTY_SCOPE);
