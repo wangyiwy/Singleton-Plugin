@@ -11,11 +11,9 @@ import com.intellij.psi.codeStyle.CodeStyleManager;
  * created on 2017/1/15.
  */
 public class EnumPatternBuilder extends BaseBuilder {
-
     @Override
     public void build(Editor editor, PsiElementFactory elementFactory, Project project, PsiClass psiClass, String className) {
         PsiEnumConstant enumConstant = elementFactory.createEnumConstantFromText("INSTANCE", psiClass);
-
         if (!containFiled(psiClass, enumConstant)) {
             psiClass.add(enumConstant);
         }
